@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         微博一键拉黑
+// @name:EN      Weibo Quick Block User
+// @name:zh-CN   微博一键拉黑
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.4
 // @description  一键拉黑微博用户。在博主、转发者和评论者的用户名旁显示拉黑按钮。
-// @author       Moran Fong
+// @author       Moran
 // @homepageURL  https://github.com/morandot/userscripts
 // @supportURL   https://github.com/morandot/userscripts/issues
 // @downloadURL  https://raw.githubusercontent.com/morandot/userscripts/main/src/weibo-one-click-block.js

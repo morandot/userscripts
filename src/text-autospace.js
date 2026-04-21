@@ -1,12 +1,13 @@
 // ==UserScript==
-// @name               文本自动间距
+// @name               Text Auto Space
 // @name:EN            Text Auto Space
+// @name:zh-CN         文本自动间距
 // @name:zh-TW         文字自動间距
-// @version            1.0.2
+// @version            1.0.4
 // @description        这个脚本为现代浏览器添加了 text-autospace CSS 特性
 // @description:EN     This script adds the text-autospace CSS feature for modern browsers
 // @description:zh-TW  這個腳本為現代瀏覽器添加了 text-autospace CSS 特性
-// @author             Moran Fong
+// @author             Moran
 // @homepageURL        https://github.com/morandot/userscripts
 // @supportURL         https://github.com/morandot/userscripts/issues
 // @downloadURL        https://raw.githubusercontent.com/morandot/userscripts/main/src/text-autospace.js

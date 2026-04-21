@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name         CG 平台解除复制粘贴限制
 // @name:EN      Unlock Copy Paste on CG Platform
+// @name:zh-CN   CG 平台解除复制粘贴限制
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.1
 // @description  解除 CG 平台网页禁止复制、粘贴、选择文字、右键菜单的限制
-// @author       Moran Fong
+// @author       Moran
 // @homepageURL  https://github.com/morandot/userscripts
 // @supportURL   https://github.com/morandot/userscripts/issues
-// @downloadURL  https://raw.githubusercontent.com/morandot/userscripts/main/src/unlock-copy-paste-on-cg.js
-// @updateURL    https://raw.githubusercontent.com/morandot/userscripts/main/src/unlock-copy-paste-on-cg.js
+// @downloadURL  https://raw.githubusercontent.com/morandot/userscripts/main/src/unlock-copy-paste-on-cg-platform.js
+// @updateURL    https://raw.githubusercontent.com/morandot/userscripts/main/src/unlock-copy-paste-on-cg-platform.js
 // @match        *://dsjoj.masu.edu.cn/*
 // @match        *://10.6.6.99/*
 // @license      MIT
@@ -22,38 +23,29 @@
     var attrEvents = [
         'oncopy', 'oncut', 'onpaste',
         'oncontextmenu', 'onselectstart', 'onselect',
-        'ondragstart', 'onbeforecopy', 'onbeforecut', 'onbeforepaste',
+        'ondragstart', 'onbeforecopy', 'onbeforecut', 'onbeforepaste', 'onbeforeinput',
         'onkeydown', 'onkeyup'
     ];
     var inlineHandlerSelector = attrEvents.map(function (attr) {
         return '[' + attr + ']';
     }).join(',');
 
-    function isInsideEditor(target) {
-        var el = target;
-        while (el) {
-            if (el.classList && (
-                el.classList.contains('CodeMirror') ||
-                el.classList.contains('ace_editor') ||
-                el.contentEditable === 'true' ||
-                el.tagName === 'TEXTAREA' ||
-                el.tagName === 'INPUT'
-            )) {
-                return true;
-            }
-            el = el.parentElement;
-        }
-        return false;
-    }
-
     function isClipboardShortcut(e) {
         var key = typeof e.key === 'string' ? e.key.toLowerCase() : '';
 
-        if (!(e.ctrlKey || e.metaKey)) {
-            return false;
+        if ((e.ctrlKey || e.metaKey) && (key === 'a' || key === 'c' || key === 'v' || key === 'x')) {
+            return true;
         }
 
-        return key === 'a' || key === 'c' || key === 'v' || key === 'x';
+        return e.shiftKey && key === 'insert';
+    }
+
+    function shouldBypassRestriction(evt, e) {
+        if (evt !== 'beforeinput') {
+            return true;
+        }
+
+        return e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop';
     }
 
     function removeInlineRestrictions(root) {
@@ -81,22 +73,23 @@
         'copy', 'cut', 'paste',
         'contextmenu',
         'selectstart', 'select',
-        'dragstart', 'beforecopy', 'beforecut', 'beforepaste'
+        'dragstart', 'beforecopy', 'beforecut', 'beforepaste', 'beforeinput'
     ];
 
     restrictedEvents.forEach(function (evt) {
         document.addEventListener(evt, function (e) {
-            if (isInsideEditor(e.target)) {
+            if (!shouldBypassRestriction(evt, e)) {
                 return;
             }
-            e.stopPropagation();
+
+            e.stopImmediatePropagation();
         }, true);
     });
 
     ['keydown', 'keyup'].forEach(function (evt) {
         document.addEventListener(evt, function (e) {
-            if (!isInsideEditor(e.target) && isClipboardShortcut(e)) {
-                e.stopPropagation();
+            if (isClipboardShortcut(e)) {
+                e.stopImmediatePropagation();
             }
         }, true);
     });
