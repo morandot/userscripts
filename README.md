@@ -18,10 +18,14 @@
 2. 在脚本管理器中确认安装。
 3. 刷新目标网页后生效。
 
+## Notes
+
+- `微博一键拉黑` 当前只匹配 `https://weibo.com/*`。
+- `CG 平台解除复制粘贴限制` 目前仅通过 GitHub Raw 分发。
+- 如果脚本从 GitHub Raw 安装，自动更新依赖脚本头部的 `@downloadURL` / `@updateURL` 元数据。
+
 ## Development
 
 - 源码目录：[`src/`](https://github.com/morandot/userscripts/tree/main/src)
 - 问题反馈：[`Issues`](https://github.com/morandot/userscripts/issues)
 - 许可证：[`MIT`](./LICENSE)
-
-如果脚本从 GitHub Raw 安装，更新依赖脚本头部的 `@downloadURL` / `@updateURL` 元数据。
